@@ -11,38 +11,35 @@ class Network:
         assert hidden_layers == len(hidden_sizes) and hidden_layers == len(activations), "Length of hidden_layers list must be equal to length of hidden_size list!"
 
         prev_size = x_input
-        current_layer = None
+        self.layers = [] # store all layers
 
         """Initialize the Neural Network, with all hidden layers and corresponding activation functions."""
         for index, hidden_size, activation in enumerate(zip(hidden_sizes, activations)):
-            activation = select_activation(activation) # select the activation function
+            activation = select_activation(activation) # activation function
 
-            previous_layer = current_layer
-            current_layer = Layer(input_dim=prev_size, output_dim=hidden_size, activation_function=activation, previous_layer=previous_layer) #initialize layer
-            previous_layer.next = current_layer
-            if index == 0:
-                self.network = current_layer
+            current_layer = Layer(input_dim=prev_size, output_dim=hidden_size, activation_function=activation) # initialize layer
+            self.layers.append(current_layer)
 
             prev_size = hidden_size # overwrite previous size
 
-        output_activation = select_activation(output_activation)
-
-        if not current_layer:
-            self.network = Layer(input_dim=prev_size, output_dim=classes, activation_function=output_activation, previous_layer=current_layer) # output Layer
-        else:
-            Layer(input_dim=prev_size, output_dim=classes, activation_function=output_activation, previous_layer=current_layer)  # output Layer
-
+        self.layers.append(Layer(input_dim=prev_size, output_dim=classes, activation_function=output_activation))  # output Layer
 
 
     def forward(self, x_input: numpy.ndarray):
-
-        layer = self.network
+        """Forward pass
+        x_input: Input into array (N, D) (samples, dimension)
+        """
         output = x_input
-        while layer:
+        for layer in self.layers:
             output = layer.forward(x_input=output)
-            layer = layer.next_layer
 
         return output
+
+    def backward(self, loss: float):
+
+
+
+
 
 
 
