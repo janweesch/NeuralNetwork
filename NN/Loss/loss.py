@@ -9,6 +9,28 @@ class Loss:
     def backward(self, y_out, y_truth):
         return NotImplementedError
 
+class L1(Loss):
+
+    def forward(self, y_out, y_truth):
+
+        loss = - numpy.abs(y_out - y_truth)
+        average_loss = numpy.mean(loss)
+
+        return average_loss
+
+    def backward(self, y_out, y_truth):
+
+        dL = None
+
+        dL_1 = numpy.where(y_out > y_truth, y_out,  1)
+
+        dL_2 = numpy.where(y_out > y_truth, )
+
+        
+        assert dL is not None, "L1 Loss Gradient can not be None!"
+
+        return dL
+
 class BCE(Loss):
 
     def forward(self, y_out, y_truth):
