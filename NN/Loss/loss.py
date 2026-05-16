@@ -20,16 +20,18 @@ class L1(Loss):
 
     def backward(self, y_out, y_truth):
 
-        dL = None
+        dl = None
 
-        dL_1 = numpy.where(y_out > y_truth, y_out,  1)
+        dl_1 = numpy.where(y_out > y_truth, 1, -2) # right side of the minimum
 
-        dL_2 = numpy.where(y_out > y_truth, )
+        dl_2 = numpy.where(y_out < y_truth, -1,  0) # left side of the minimum
 
-        
-        assert dL is not None, "L1 Loss Gradient can not be None!"
+        # merge both
+        dl = numpy.where(dl_1 > dl_2, dl_1, dl_2)
 
-        return dL
+        assert dl is not None, "L1 Loss Gradient can not be None!"
+
+        return dl
 
 class BCE(Loss):
 
