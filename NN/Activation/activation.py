@@ -13,6 +13,16 @@ class ActivationFunction(ABC):
     def backward(a_output: numpy.ndarray):
         pass
 
+class Affine(ActivationFunction):
+
+    @staticmethod
+    def forward(z_input: numpy.ndarray):
+        return z_input
+
+    @staticmethod
+    def backward(a_output: numpy.ndarray):
+        return numpy.ones((a_output.shape[0], 1))
+
 class Sigmoid(ActivationFunction):
 
     @staticmethod
@@ -27,5 +37,7 @@ class Sigmoid(ActivationFunction):
         dz = 1 / (1 + numpy.exp(-a_output)) * (1 - 1 / (1 + numpy.exp(-a_output)))
 
         return dz
+
+
 
 

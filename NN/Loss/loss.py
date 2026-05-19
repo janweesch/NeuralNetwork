@@ -47,8 +47,8 @@ class BCE(Loss):
         # Don`t sum up the gradient, one gradient for each sample.
         # 1/N in front of the loss is necessary to average the loss without changing the learning Rate for every Batch
 
-        dL = -1/len(y_out) * (y_truth/y_out + (1-y_truth)/(1-y_out)) # derivative of dL
+        dl = -1/len(y_out) * (y_truth/y_out + (1-y_truth)/(1-y_out)) # derivative of dL
 
-        return dL
+        return dl
 
 
