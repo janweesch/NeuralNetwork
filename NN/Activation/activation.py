@@ -10,7 +10,7 @@ class ActivationFunction(ABC):
 
     @staticmethod
     @abstractmethod
-    def backward(a_output: numpy.ndarray):
+    def backward(z_input: numpy.ndarray):
         pass
 
 class Affine(ActivationFunction):
@@ -20,8 +20,8 @@ class Affine(ActivationFunction):
         return z_input
 
     @staticmethod
-    def backward(a_output: numpy.ndarray):
-        return numpy.ones((a_output.shape[0], 1))
+    def backward(z_input: numpy.ndarray):
+        return numpy.ones((z_input.shape[0], 1))
 
 class Sigmoid(ActivationFunction):
 
@@ -32,12 +32,24 @@ class Sigmoid(ActivationFunction):
         return a
 
     @staticmethod
-    def backward(a_output: numpy.ndarray):
+    def backward(z_input: numpy.ndarray):
 
-        dz = 1 / (1 + numpy.exp(-a_output)) * (1 - 1 / (1 + numpy.exp(-a_output)))
+        dz = 1 / (1 + numpy.exp(-z_input)) * (1 - (1 / (1 + numpy.exp(-z_input))))
 
         return dz
 
+class ReLU(ActivationFunction):
 
+    @staticmethod
+    def forward(z_input: numpy.ndarray):
+
+        a = numpy.maximum (0, z_input)
+
+    @staticmethod
+    def backward(z_input: numpy.ndarray):
+
+        dz = numpy. where(z_input > 0, 1, 0)
+
+        return dz
 
 
