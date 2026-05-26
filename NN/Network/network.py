@@ -24,7 +24,7 @@ class Network:
 
 
         output_layer_units = classes if classes > 2 else 1
-        Layer(input_dim=prev_size, output_dim=output_layer_units, activation_function=Affine)
+        Layer(input_dim=prev_size, output_dim=output_layer_units)
 
 
     def forward(self, x_input: numpy.ndarray):
