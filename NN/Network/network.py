@@ -7,9 +7,9 @@ from NN.Optimization.optimizer import Optimizer
 
 class Network:
 
-    def __init__(self, x_input: int, classes: int,  hidden_layers: int, hidden_sizes: List[int], activations: List[ActivationFunction], output_layer: Optional[int] = None, output_activation: ActivationFunction=Affine ):
+    def __init__(self, x_input: int, classes: int,  num_layers: int, hidden_sizes: List[int], activations: List[ActivationFunction]):
 
-        assert hidden_layers == len(hidden_sizes) and hidden_layers == len(activations), "Length of hidden_layers list must be equal to length of hidden_size list!"
+        assert num_layers == len(hidden_sizes) and num_layers == len(activations), "Length of hidden_layers list must be equal to length of hidden_size list and activations list!"
 
         prev_size = x_input
         self.layers = [] # store all layers
@@ -22,8 +22,10 @@ class Network:
 
             prev_size = hidden_size # overwrite previous size
 
-        output_layer_size = output_layer if output_layer is not None else classes
-        self.layers.append(Layer(input_dim=prev_size, output_dim=output_layer_size, activation_function=output_activation))  # output Layer
+
+        output_layer_units = classes if classes > 2 else 1
+        Layer(input_dim=prev_size, output_dim=output_layer_units, activation_function=Affine)
+
 
     def forward(self, x_input: numpy.ndarray):
         """Forward pass
@@ -41,7 +43,7 @@ class Network:
         """
         dout = loss
         for layer in self.layers[::-1]:
-            dout = layer.backward(dout=dout, optimizer=optimizer)
+            dout = layer.backward(dout, optimizer)
 
 
 
