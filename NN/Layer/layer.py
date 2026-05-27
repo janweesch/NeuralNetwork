@@ -2,6 +2,7 @@ from __future__ import annotations
 import numpy
 from NN.Activation.activation import Sigmoid, Affine
 from NN.Optimization.optimizer import Optimizer, GradientDescent
+from NN.Data.visualizer import Visualizer
 
 
 class Layer:
@@ -20,6 +21,7 @@ class Layer:
 
     def random_weight_initialization(self, input_dim: int, output_dim: int):
             self.weights = numpy.random.rand(input_dim+1, output_dim)
+            #self.weights = numpy.random.uniform(-1, 1, size=(input_dim+1, output_dim))
 
     def forward(self, x_input : numpy.ndarray):
         """Calculate the forward pass of the Layer"""
@@ -28,6 +30,8 @@ class Layer:
         assert self.weights.shape[0] ==  x.shape[1], "Weights and Feature input does not have the same dimension!"
         z = x @ self.weights # preactivation
         a = self.activation_function.forward(z) # call the forward pass in the activation
+        #if a.shape[1] == 2:
+         #   Visualizer.visualize_2d_points(a, title= "X-OR Data Transformed")
         self._cache = (x, z) # store the output
         return a # shape (Batch_size, output_dim)
 

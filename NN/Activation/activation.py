@@ -45,6 +45,8 @@ class ReLU(ActivationFunction):
 
         a = numpy.maximum (0, z_input)
 
+        return a
+
     @staticmethod
     def backward(z_input: numpy.ndarray):
 
@@ -52,4 +54,16 @@ class ReLU(ActivationFunction):
 
         return dz
 
+class Quadratic:
 
+    @staticmethod
+    def forward(z_input: numpy.ndarray):
+        a = z_input**2
+
+        return a
+
+    @staticmethod
+    def backward(z_input:numpy.ndarray):
+        dz = 2*z_input
+
+        return dz

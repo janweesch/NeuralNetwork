@@ -37,12 +37,20 @@ class L1(Loss):
 
         return dl
 
-class BCE(Loss):
+class L2(Loss):
 
     @staticmethod
     def forward(y_out, y_truth):
 
-        loss = - (y_truth * numpy.log(y_out) + (1-y_truth) * (1-numpy.log(y_out))) # binary cross entropy
+        pass
+
+class BCE(Loss):
+
+    @staticmethod
+    def forward(y_out, y_truth):
+        print(y_out)
+        y_out = numpy.clip(y_out, 1e-7, 1 - 1e-7)
+        loss = - (y_truth * numpy.log(y_out) + (1-y_truth) * (numpy.log(1-y_out))) # binary cross entropy
         average_loss = numpy.mean(loss) # accumulated loss
 
         return average_loss
@@ -53,8 +61,9 @@ class BCE(Loss):
         # Don`t sum up the gradient, one gradient for each sample.
         # 1/N in front of the loss is necessary to average the loss without changing the learning Rate for every Batch
 
-        dl = -1/len(y_out) * (y_truth/y_out + (1-y_truth)/(1-y_out)) # derivative of dL
+        dl = -1/len(y_out) * (y_truth/y_out - (1-y_truth)/(1-y_out)) # derivative of dL
 
         return dl
+
 
 

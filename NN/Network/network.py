@@ -7,11 +7,11 @@ from NN.Optimization.optimizer import Optimizer
 
 class Network:
 
-    def __init__(self, x_input: int, classes: int,  num_layers: int, hidden_sizes: List[int], activations: List[ActivationFunction]):
+    def __init__(self, input_dim: int, classes: int,  hidden_layers: int, hidden_sizes: List[int], activations: List[ActivationFunction], output_activation_function=Affine):
 
-        assert num_layers == len(hidden_sizes) and num_layers == len(activations), "Length of hidden_layers list must be equal to length of hidden_size list and activations list!"
+        assert hidden_layers == len(hidden_sizes) and hidden_layers == len(activations), "Length of hidden_layers list must be equal to length of hidden_size list and activations list!"
 
-        prev_size = x_input
+        prev_size = input_dim
         self.layers = [] # store all layers
 
         """Initialize the Neural Network, with all hidden layers and corresponding activation functions."""
@@ -22,10 +22,8 @@ class Network:
 
             prev_size = hidden_size # overwrite previous size
 
-
         output_layer_units = classes if classes > 2 else 1
-        Layer(input_dim=prev_size, output_dim=output_layer_units)
-
+        self.layers.append(Layer(input_dim=prev_size, output_dim=output_layer_units, activation_function=output_activation_function))
 
     def forward(self, x_input: numpy.ndarray):
         """Forward pass
@@ -34,6 +32,7 @@ class Network:
         output = x_input
         for layer in self.layers:
             output = layer.forward(x_input=output)
+
 
         return output
 

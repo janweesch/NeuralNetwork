@@ -3,13 +3,13 @@ import numpy
 
 class Optimizer:
 
-    def __init__(self, learning_rate: float):
+    def __init__(self, learning_rate: float = 0.05):
 
         self.learning_rate = learning_rate
 
 class GradientDescent(Optimizer):
 
-    def __init__(self, learning_rate: float):
+    def __init__(self, learning_rate: float=0.1):
         super().__init__(learning_rate)
 
 
