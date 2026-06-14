@@ -2,7 +2,7 @@ from __future__ import annotations
 import numpy as np
 from NN.Activation.activation import Sigmoid, Affine
 from NN.Optimization.optimizer import Optimizer, GradientDescent
-from NN.Data.visualizer import Visualizer
+from .weight_initialization import weight_initialization
 
 
 class Layer:
@@ -27,24 +27,11 @@ class Layer:
         self.input_dim = input_dim # dimension (number of Neurons) of previous Layer
         self.output_dim = output_dim # dimension (number of Neurons) of current Layer
 
-        self.weights = None
-        self.random_weight_initialization(input_dim=input_dim, output_dim=output_dim)  # include bias
+        self.weights = weight_initialization(input_dim=input_dim+1, output_dim=output_dim, activation_function=activation_function) # input_dim includes bias
 
         self.activation_function = activation_function # activation function of layer
 
         self._cache = None
-
-    def random_weight_initialization(self, input_dim: int, output_dim: int):
-        """
-        Initialise weights of layer from a random uniform distribution.
-        
-        Args:
-            input_dim: Number of neurons of the previous layer
-            output_dim: Number of neurons of the current layer
-        """
-        
-        self.weights = np.random.rand(input_dim+1, output_dim)
-        #self.weights = np.random.uniform(-1, 1, size=(input_dim+1, output_dim))
 
     def forward(self, x_input : np.ndarray) -> np.ndarray:
         """
@@ -90,14 +77,3 @@ class Layer:
         self.weights = optimizer.optimize(weights=self.weights, gradient=dw)
 
         return dx
-
-
-
-
-
-
-
-
-
-
-
