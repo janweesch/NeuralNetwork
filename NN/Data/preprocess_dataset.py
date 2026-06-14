@@ -18,7 +18,6 @@ def download_kaggle_dataset(kaggle_path: str="hojjatk/mnist-dataset", save_dir_d
 
     Returns:
         Path: Directory containing the downloaded dataset.
-
     """
     # Download latest version
     path = kagglehub.dataset_download(handle=kaggle_path, output_dir=save_dir_dataset)
