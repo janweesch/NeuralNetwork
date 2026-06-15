@@ -2,7 +2,7 @@
 from typing import Any, Optional, List, Tuple
 from pathlib import Path
 from abc import ABC, abstractmethod
-from transformation import Transformation
+from transformation import Transformation, ChainTransformation, ToNumpyArray
 import pandas as pd
 import numpy as np
 from PIL import Image
@@ -17,7 +17,7 @@ class Dataset(ABC):
         transforms: Transformations which should be applied to the data
     """
 
-    def __init__(self, root: Path, transforms: Optional[Transformation]=None):
+    def __init__(self, root: Path, transforms: Optional[Transformation]=ToNumpyArray):
 
         self.root = root
         self.transforms = transforms
@@ -45,7 +45,7 @@ class Dataset(ABC):
 
 class MNISTDataset(Dataset):
 
-    def __init__(self, root: Path, image_dir_name: str, labels_file_name: str, transforms: Optional[Transformation]=None):
+    def __init__(self, root: Path, image_dir_name: str, labels_file_name: str, transforms: Optional[Transformation]):
         """
         MNIST-style dataset loading images and labels from disk.
 
@@ -100,11 +100,10 @@ class MNISTDataset(Dataset):
 
         image_path = self.images / f"{index}.png"
 
-        image_array = self.load_image_as_numpy_array(image_path=image_path) # convert to numpy array
-
         label = self.labels[index] # class of image
 
-        if self.transforms:
-            pass
+        image_array = self.transforms.transform(image_path)
+
+        assert image_array.dtype == np.uint8, f"Image must be a numpy array! Convert first with {ToNumpyArray}"
 
         return image_array, label
