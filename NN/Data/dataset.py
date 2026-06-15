@@ -79,20 +79,6 @@ class MNISTDataset(Dataset):
 
         return labels
 
-    @staticmethod
-    def load_image_as_numpy_array(image_path: Path) -> np.ndarray:
-        """
-        Loads an PIL image and convert it into a numpy array.
-
-        Args:
-             image_path: Path to the PIL image
-
-         Returns:
-             np.ndarray: Converted PIL image
-        """
-
-        return np.asarray(Image.open(image_path))
-
     def __len__(self) -> int:
         return len(self.labels)
 
