@@ -97,7 +97,7 @@ class Normalize(Transformation):
 
     def transform(self, data: np.ndarray):
 
-        assert data.dtype == np.uint8, "Image is not a numpy array!"
+        assert data.dtype == np.uint8, f"Image is not a numpy array! Convert first with {ToNumpyArray}!"
 
         # transforms the pixel values to the given output range
         old_range = self.in_range_max - self.in_range_min
@@ -137,6 +137,7 @@ class Standardization(Transformation):
 
         # reshape the array for broadcasting for each channel
 
+        assert data.dtype == np.uint8, f"Image is not a numpy array! Convert first with {ToNumpyArray}!"
         assert data.shape[0] == self.mean.shape[0] and data.shape[0] == self.std.shape[0], "The shape of Image channels is not the same as the number of calculated means and standard deviations for the image."
 
         std_image = (data - self.mean) / self.std
